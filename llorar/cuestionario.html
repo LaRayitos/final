@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcd.bootstrapcdn.con/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="style.css">            
+<title>Cuestionario </title>
+</head>
+     
+   <style>
+    .quiz-container {
+        outline: #CE84AD 1px;
+        background-color: #CE84AD;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 2px #3D348B;
+        width: 700px;
+        overflow: hidden;
+    }
+
+    .quiz-header {
+        padding: 4rem;
+    }
+li label {
+        cursor: pointer;
+    }
+
+    button {
+        background-color: #F6F6F6;
+        color: #6A33FF;
+        border: none;
+        display: block;
+        width: 100%;
+        cursor: pointer;
+        font-size: 15px;
+        font-family: verdana, Geneva;
+        padding: 15px;
+    }
+
+    button:hover {
+        background-color: #7a74af;
+    }
+
+    button:focus {
+        outline: none;
+        background-color: #822f8e;
+    }
+    </style>
+    <body>
+    <div style="margin: 24px;">
+    <nav class="navbar navbar-light" style="background-color:#7692FF ;">
+      <div class="container">
+        <a class="navbar-brand" href="/">Inicio</a>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="Menu.html">Menu</a>
+          </li>
+          <li>
+            <a href="formulario.html">Formulario</a>
+          </li>
+          <li>
+            <a href="resultado.html">Resultado</a>
+          </li>
+    
+          <li>
+            <a href="apimovies.html">Peliculas</a>
+          </li>
+          <li>
+            <a href="calculadora.html">Fisica</a>
+          </li>
+          <li>
+            <a href="calculadorafisica.html">Calculadora</a>
+          </li>
+                    <li>
+            <a href="cuestionario.html">cuestionario</a>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+
+  </div>
+<div class="quiz-container" id="quiz">
+  <div class="quiz-header">
+    <div class="image-container">
+      <img src="" alt="Imagen" id="question-image" style="width:250px; height:200px;">
+    </div>
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Question</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Question</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Question</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Question</label>
+      </li>
+    </ul>
+  </div>
+  <button id="submit">Siguiente</button>
+</div>
+
+<script> 
+const quizData = [ 
+{ 
+    question: "Cuales de los siguientes personajes esta muerto?",
+    image:"eren.jpg",
+    a:"Itachi",
+    b:"Todos",
+    c:"Eren",
+    d:"Rengoku",
+    correct:"b"
+},
+{ 
+    question: "que paso con el gato?",
+    image:"gato.jpg",
+    a:"murio",
+    b:"se suicido",
+    c:"exploto",
+    d:"se durmio",
+    correct:"d"
+},
+{ 
+    question: "quien va a dominar al mundo?",
+    image:"pato.jpg",
+    a:"Patos",
+    b:"Thanos",
+    c:"alienigenas",
+    d:"el pollo",
+    correct:"a"
+},
+{ 
+    question: "quien es mas lindo?",
+    image:"pato.jpg",
+    a:"Armin",
+    b:"Levi",
+    c:"eren",
+    d:"Jean",
+    correct:"a"
+},
+{ 
+    question: "me quedare sola siempre?",
+    image:"capi.jpg",
+    a:"si",
+    b:"no",
+    c:"date tiempo",
+    d:"creo que no",
+    correct:"d"
+},
+{ 
+    question: "Todoroki es la copia de...",
+    image:"rana.jpg",
+    a:"Azula",
+    b:"Natsu",
+    c:"Zuko",
+    d:"es original",
+    correct:"c"
+},
+{ 
+    question: "estoy sola",
+    image:"oli.jpg",
+    a:"esto no deberian ser preguntas?",
+    b:"ve a aterapia mija",
+    c:"zi",
+    d:"ya duermase",
+    correct:"c"
+},
+
+];
+
+const quiz = document.getElementById('quiz');
+const answerEls = document.querySelectorAll('.answer');
+const questionEl = document.getElementById('question');
+const a_text = document.getElementById('a_text');
+const b_text = document.getElementById('b_text');
+const c_text = document.getElementById('c_text');
+const d_text = document.getElementById('d_text');
+const imageEl = document.getElementById('question-image');
+const submitBtn = document.getElementById('submit');
+
+let currentQuiz = 0;
+let score = 0;
+
+loadQuiz();
+
+function loadQuiz() {
+  deselectAnswers();
+
+  const currentQuizData = quizData[currentQuiz];
+
+  questionEl.innerText = currentQuizData.question;
+  a_text.innerText = currentQuizData.a;
+  b_text.innerText = currentQuizData.b;
+  c_text.innerText = currentQuizData.c;
+  d_text.innerText = currentQuizData.d;
+  imageEl.src = currentQuizData.image;
+}
+
+function deselectAnswers() {
+  answerEls.forEach((answerEl) => (answerEl.checked = false));
+}
+
+function getSelected() {
+  let answer;
+
+  answerEls.forEach((answerEl) => {
+    if (answerEl.checked) {
+      answer = answerEl.id;
+    }
+  });
+
+  return answer;
+}
+
+submitBtn.addEventListener('click', () => {
+  const answer = getSelected();
+
+  if (answer) {
+    if (answer === quizData[currentQuiz].correct) {
+      score++;
+    }
+
+    currentQuiz++;
+
+    if (currentQuiz < quizData.length) {
+      loadQuiz();
+    } else {
+      quiz.innerHTML = `
+        <h2>Respondiste ${score}/${quizData.length} preguntas correctamente</h2>
+        <button onclick="location.reload()">Volver a intentar</button>
+      `;
+    }
+  }
+});
+</script>
+
+ <footer> 
+        <div class="container"> 
+        <div class="footer-content"> 
+        <div class="footer-section about"> 
+        
+        <h1>Contactame</h1>
+        <p>si estas interesado en contactarme , puedes hacerlo a traves de mis redes sociales:<p/>
+        
+        <div class="contact-links"a> 
+        
+        <a href="http://www.facebook.com/miperfil" target="_blank"><i class ="fab fa-facebook"></i></a>
+        <a href="http://www.facebook.com/miperfil" target="_blank"><i class ="fab fa-facebook"></i></a>
+        <a href="http://www.facebook.com/miperfil" target="_blank"><i class ="fab fa-facebook"></i></a>
+        </div>
+        </div>
+        </div>
+        </div>
+        </footer>
+
+<script >
+       const socialnetworks = document.querySelectorAll('.contact-links a');
+    socialnetworks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            window.open(link.href, '_blank');
+        });
+    });
+    </script>
+</body>
+</html>
